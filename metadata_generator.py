@@ -43,6 +43,11 @@ for line in data:
         patch_info = original_data["patch"].split(" ")
         source_file = patch_info[2][2:] if len(patch_info) > 2 else ""
         pprint(source_file)
+        if "src/main" not in source_file and source_file != '':
+            input()
+
+    os.makedirs(subject,exist_ok=True)
+    os.makedirs(join(subject,commit),exist_ok=True)
 
     result.append(
         {
@@ -50,11 +55,19 @@ for line in data:
             "subject": subject,
             "bug_id": commit,
             "branch": branch,
+            "project_name": source_file.split("src/main")[0],
             "source_file": source_file,
-            "source_directory": "./",
-            "class_directory": "./",
-            "test_directory": "./",
-            "test_class_directory": "./",
+            "source_directory": "src/main/java",
+            "class_directory": "target/classes",
+            "test_directory": "src/test/java",
+            "test_class_directory": "target/test-classes",
+            "java_version": 8,
+            "build_script": "build_subject",
+            "config_script": "config_subject",
+            "clean_script": "clean_subject",
+            "test_script": "test_subject",
+            "bug_type": "Test Failure",
+            "build_system": "maven",
             "line_numbers": [],
             "dependencies": [],
             "passing_test": [],

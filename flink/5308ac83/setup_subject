@@ -1,0 +1,17 @@
+#!/bin/bash
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+benchmark_name=$(echo $script_dir | rev | cut -d "/" -f 3 | rev)
+project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
+bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
+dir_name=/experiment/$benchmark_name/$project_name/$bug_id/src
+current_dir=$PWD
+mkdir -p $dir_name
+cd $dir_name
+mkdir dev-patch
+
+BRANCH="bugs-dot-jar_FLINK-1705_5308ac83"
+SUBJECT="flink"
+
+git clone --single-branch  --branch $BRANCH https://github.com/bugs-dot-jar/$SUBJECT src
+
+exit 0
