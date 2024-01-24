@@ -70,10 +70,10 @@ for line in data:
             "build_system": "maven",
             "line_numbers": [],
             "dependencies": [],
-            "passing_test": [],
-            "failing_test": original_data["failing_tests"],
+            "passing_test_identifiers": [],
+            "failing_test_identifiers": original_data["failing_test_identifiers"],
             "test_timeout": 5,
-            "count_neg": len(original_data["failing_tests"]),
+            "count_neg": len(original_data["failing_test_identifiers"]),
             "count_pos": 0,
         }
     )
