@@ -5,13 +5,47 @@ project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
 bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 dir_name=/experiment/$benchmark_name/$project_name/$bug_id/src
 current_dir=$PWD
+
+# ADD DEBUG OUTPUT:
+echo "=== SETUP_SUBJECT DEBUG INFO ==="
+echo "Script directory: $script_dir"
+echo "Benchmark name: $benchmark_name"
+echo "Project name: $project_name"
+echo "Bug ID: $bug_id"
+echo "Target directory: $dir_name"
+echo "Current directory: $current_dir"
+echo "==============================="
+
 mkdir -p $dir_name
 cd $dir_name
+
+echo "Changed to directory: $(pwd)"
+echo "Creating dev-patch directory..."
 mkdir dev-patch
 
 BRANCH="bugs-dot-jar_FLINK-1133_02c08456"
 SUBJECT="flink"
 
-git clone --single-branch  --branch $BRANCH https://github.com/bugs-dot-jar/$SUBJECT src
+echo "About to clone repository:"
+echo "  Branch: $BRANCH"
+echo "  Subject: $SUBJECT"
+echo "  URL: https://github.com/bugs-dot-jar/$SUBJECT"
+echo "  Target: src/"
 
+git clone --single-branch --branch $BRANCH https://github.com/bugs-dot-jar/$SUBJECT src
+
+if [ $? -eq 0 ]; then
+    echo "Git clone successful"
+    echo "Contents of target directory:"
+    ls -la
+    echo "Contents of src directory:"
+    ls -la src/
+    echo "Checking for flink-java sub-project:"
+    ls -la src/flink-java/ 2>/dev/null || echo "flink-java sub-project not found"
+else
+    echo "Git clone failed with exit code: $?"
+    exit 1
+fi
+
+echo "Setup completed successfully"
 exit 0

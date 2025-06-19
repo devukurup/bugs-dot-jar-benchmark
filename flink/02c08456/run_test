@@ -16,8 +16,19 @@ fi
 
 SUB_PROJECT="flink-java"
 
+# ADD DEBUG OUTPUT:
+echo "=== RUN_TEST DEBUG INFO ==="
+echo "Script directory: $script_dir"
+echo "Target directory: $dir_name"
+echo "Current working directory: $(pwd)"
+echo "Sub-project: $SUB_PROJECT"
+echo "Test class: $TEST_CLASS"
+echo "About to run test in: $dir_name/src/src"
+echo "==============================="
+
 if [[ $SUB_PROJECT != "<SUB_PROJECT>" ]]
 then
+echo "Running test with -pl $SUB_PROJECT flag..."
 timeout 10 mvn test -pl $SUB_PROJECT -amd -Dtest=$TEST_CLASS \
   -V -B -U -Dhttps.protocols=TLSv1.2 \
   -Denforcer.skip=true \
@@ -34,8 +45,9 @@ timeout 10 mvn test -pl $SUB_PROJECT -amd -Dtest=$TEST_CLASS \
   -Dskip.gulp=true \
   -Dskip.bower=true \
   -Dbaseline.skip=true \
-  -Dmaven.javadoc.skip=true > /dev/null 2>&1
+  -Dmaven.javadoc.skip=true
 else
+echo "Running test without sub-project flag..."
   timeout 10 mvn test -Dtest=$TEST_CLASS \
     -V -B -U -Dhttps.protocols=TLSv1.2 \
     -Denforcer.skip=true \
@@ -52,12 +64,14 @@ else
     -Dskip.gulp=true \
     -Dskip.bower=true \
     -Dbaseline.skip=true \
-    -Dmaven.javadoc.skip=true > /dev/null 2>&1
+    -Dmaven.javadoc.skip=true
 fi
 
 EXIT_CODE=$?
 
-if [[ EXIT_CODE -eq 0 ]]
+echo "Test completed with exit code: $EXIT_CODE"
+
+if [[ $EXIT_CODE -eq 0 ]]
 then
   echo "PASS"
 else
@@ -65,4 +79,3 @@ else
 fi;
 
 exit $EXIT_CODE
-

@@ -5,5 +5,19 @@ project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
 bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 dir_name=/experiment/$benchmark_name/$project_name/$bug_id
 
+SUB_PROJECT="flink-java"
+
+# ADD DEBUG OUTPUT:
+echo "=== CONFIG SCRIPT DEBUG INFO ==="
+echo "Script directory: $script_dir"
+echo "Target directory: $dir_name"
+echo "Sub-project: $SUB_PROJECT"
+echo "Config directory: $dir_name/src/src/$SUB_PROJECT"
+echo "==============================="
+
+cd $dir_name/src/src/$SUB_PROJECT
+
+echo "Current working directory: $(pwd)"
+echo "Configuration completed for $SUB_PROJECT"
 
 exit 0

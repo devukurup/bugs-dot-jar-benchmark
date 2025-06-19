@@ -8,6 +8,24 @@ cd $dir_name/src/src
 
 SUB_PROJECT="flink-java"
 
+# ADD DEBUG OUTPUT:
+echo "=== BUILD SCRIPT DEBUG INFO ==="
+echo "Script directory: $script_dir"
+echo "Target directory: $dir_name"
+echo "Current working directory: $(pwd)"
+echo "Sub-project: $SUB_PROJECT"
+echo "About to cd to: $SUB_PROJECT"
+
+# FIX: Actually cd into the sub-project
+cd $SUB_PROJECT
+
+echo "Current working directory after cd to subproject: $(pwd)"
+echo "Contents of current directory:"
+ls -la
+echo "Checking for pom.xml:"
+ls -la pom.xml 2>/dev/null || echo "pom.xml not found!"
+echo "==============================="
+
 mvn install -DskipTests -DskipUTs=true -DskipITs=true \
   -V -B -U -Dhttps.protocols=TLSv1.2 \
   -Denforcer.skip=true \
@@ -25,3 +43,11 @@ mvn install -DskipTests -DskipUTs=true -DskipITs=true \
   -Dskip.bower=true \
   -Dbaseline.skip=true \
   -Dmaven.javadoc.skip=true
+
+# ADD DEPENDENCY COPY:
+echo "Copying dependencies..."
+mvn dependency:copy-dependencies
+
+echo "Build completed. Final directory contents:"
+ls -la target/ 2>/dev/null || echo "target/ directory not found"
+ls -la target/dependency/ 2>/dev/null || echo "target/dependency/ directory not found"

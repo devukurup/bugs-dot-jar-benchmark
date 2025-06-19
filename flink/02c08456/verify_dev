@@ -5,23 +5,60 @@ project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
 bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 dir_name=/experiment/$benchmark_name/$project_name/$bug_id
 
-exit 0
+TEST_CLASS=$1
+TIMEOUT=${2:-300}
 
-#cd $dir_name/src
-#patch -f -p 1 < $dir_name/dev-patch/fix.patch
-#bash $script_dir/build_subject  > /dev/null 2>&1
-#bash $script_dir/run_test 1  > /dev/null 2>&1
-#exit_code=$?
-#patch -R -f -p 1 < $dir_name/dev-patch/fix.patch
-#bash $script_dir/build_subject > /dev/null 2>&1
-#
-#if [[ err -eq 0 ]]
-#then
-#  echo "PASS"
-#else
-#  echo "FAIL"
-#fi;
-#
-#exit $exit_code
+# ADD DEBUG OUTPUT:
+echo "=== VERIFY_DEV DEBUG INFO ==="
+echo "Script directory: $script_dir"
+echo "Benchmark name: $benchmark_name"
+echo "Project name: $project_name"
+echo "Bug ID: $bug_id"
+echo "Target directory: $dir_name"
+echo "Test class: $TEST_CLASS"
+echo "Timeout: $TIMEOUT"
+echo "==============================="
 
+if [ -z "$TEST_CLASS" ]; then
+    echo "Error: Test class parameter is required"
+    exit 255
+fi
 
+cd $dir_name/src
+
+echo "Current directory: $(pwd)"
+echo "Looking for dev-patch..."
+ls -la $dir_name/dev-patch/ 2>/dev/null || echo "dev-patch directory not found"
+
+echo "Applying dev patch..."
+patch -f -p 1 < $dir_name/dev-patch/fix.patch
+
+if [ $? -eq 0 ]; then
+    echo "Patch applied successfully"
+else
+    echo "Patch application failed"
+    exit 1
+fi
+
+echo "Building with patch applied..."
+bash $script_dir/build_subject
+
+echo "Running test with patch applied..."
+timeout $TIMEOUT bash $script_dir/run_test $TEST_CLASS
+exit_code=$?
+
+echo "Test with patch completed with exit code: $exit_code"
+
+echo "Reverting patch..."
+patch -R -f -p 1 < $dir_name/dev-patch/fix.patch
+
+echo "Rebuilding without patch..."
+bash $script_dir/build_subject
+
+if [[ $exit_code -eq 0 ]]; then
+    echo "PASS - Test passes with dev patch"
+else
+    echo "FAIL - Test fails even with dev patch"
+fi
+
+exit $exit_code

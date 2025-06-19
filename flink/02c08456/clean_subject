@@ -6,4 +6,23 @@ bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 dir_name=/experiment/$benchmark_name/$project_name/$bug_id
 cd $dir_name/src/src
 
+SUB_PROJECT="flink-java"
+
+# ADD DEBUG OUTPUT:
+echo "=== CLEAN SCRIPT DEBUG INFO ==="
+echo "Script directory: $script_dir"
+echo "Target directory: $dir_name"
+echo "Current working directory: $(pwd)"
+echo "Sub-project: $SUB_PROJECT"
+echo "About to cd to: $SUB_PROJECT"
+
+# FIX: Actually cd into the sub-project
+cd $SUB_PROJECT
+
+echo "Current working directory after cd to subproject: $(pwd)"
+echo "Running mvn clean in: $(pwd)"
+echo "==============================="
+
 mvn clean
+
+echo "Clean completed."

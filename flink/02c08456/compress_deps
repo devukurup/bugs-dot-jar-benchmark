@@ -5,14 +5,33 @@ project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
 bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 dir_name=/experiment/$benchmark_name/$project_name/$bug_id
 
-TARGET_PATH=$dir_name/src/src
-DEPENDENCY_PATH=$TARGET_PATH/dependency
+SUB_PROJECT="flink-java"
+
+# FIX: Update paths to include sub-project
+TARGET_PATH=$dir_name/src/src/$SUB_PROJECT
+DEPENDENCY_PATH=$TARGET_PATH/target/dependency
 EXTRACTED_DEPENDENCIES_PATH=$TARGET_PATH/extracted_dependencies
 
+# ADD DEBUG OUTPUT:
+echo "=== COMPRESS DEPS DEBUG INFO ==="
+echo "Script directory: $script_dir"
+echo "Target path: $TARGET_PATH"
+echo "Dependency path: $DEPENDENCY_PATH"
+echo "Sub-project: $SUB_PROJECT"
+echo "==============================="
 
-cd $TARGET_PATH/;
-mvn dependency:copy-dependencies
+cd $TARGET_PATH/
 
+# Check if dependency directory exists
+if [ ! -d "target/dependency" ]; then
+    echo "Dependency directory not found. Running mvn dependency:copy-dependencies..."
+    mvn dependency:copy-dependencies
+else
+    echo "Dependency directory found: target/dependency"
+fi
+
+echo "Contents of dependency directory:"
+ls -la target/dependency/ 2>/dev/null || echo "target/dependency/ not found"
 
 rm -rf "$EXTRACTED_DEPENDENCIES_PATH" \
   && mkdir "$EXTRACTED_DEPENDENCIES_PATH" \
