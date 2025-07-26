@@ -8,7 +8,7 @@ cd $dir_name/src/src
 
 SUB_PROJECT="flink-compiler"
 
-mvn install -DskipTests -DskipUTs=true -DskipITs=true \
+mvn install -pl $SUB_PROJECT -am -DskipTests -DskipUTs=true -DskipITs=true \
   -V -B -U -Dhttps.protocols=TLSv1.2 \
   -Denforcer.skip=true \
   -Dcheckstyle.skip=true \
