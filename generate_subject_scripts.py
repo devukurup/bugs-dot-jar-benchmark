@@ -37,3 +37,5 @@ for project in projects:
     else:
         os.system("sed -i '0,/<SUB_PROJECT>/s/<SUB_PROJECT>/{}/' {}".format(x,join(project["subject"],project["bug_id"],"run_test")))
         os.system("sed -i '0,/<SUB_PROJECT>/s/<SUB_PROJECT>/{}/' {}".format(x,join(project["subject"],project["bug_id"],"build_subject")))
+        os.system("sed -i '0,/<SUB_PROJECT>/s/<SUB_PROJECT>/{}/' {}".format(x,join(project["subject"],project["bug_id"],"clean_subject")))
+        os.system("sed -i '0,/<SUB_PROJECT>/s/<SUB_PROJECT>/{}/' {}".format(x,join(project["subject"],project["bug_id"],"compress_deps")))
