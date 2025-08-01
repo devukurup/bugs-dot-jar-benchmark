@@ -12,6 +12,6 @@ mkdir dev-patch
 BRANCH="bugs-dot-jar_FLINK-25949_74c45c48_HOTFIX"
 SUBJECT="flink"
 
-git clone --single-branch  --branch $BRANCH https://github.com/bugs-dot-jar/$SUBJECT src
+git clone --single-branch  --branch $BRANCH https://github.com/carolhanna01/$SUBJECT src
 
 exit 0

@@ -12,6 +12,6 @@ mkdir dev-patch
 BRANCH="<BRANCH>"
 SUBJECT="<SUBJECT>"
 
-git clone --single-branch  --branch $BRANCH https://github.com/bugs-dot-jar/$SUBJECT src
+git clone --single-branch  --branch $BRANCH https://github.com/carolhanna01/$SUBJECT src
 
 exit 0
