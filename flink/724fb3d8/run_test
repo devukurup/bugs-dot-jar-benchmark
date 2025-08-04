@@ -14,7 +14,7 @@ then
   exit 255
 fi
 
-SUB_PROJECT="<SUB_PROJECT>"
+SUB_PROJECT="flink-connectors/flink-connector-kafka"
 
 if [[ $SUB_PROJECT != "<SUB_PROJECT>" ]]
 then
