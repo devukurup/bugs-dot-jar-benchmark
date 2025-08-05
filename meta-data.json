@@ -40233,5 +40233,40 @@
         },
         "output_dir_abspath": "/output",
         "language": "java"
+    },
+    {
+        "id": 1173,
+        "subject": "flink",
+        "bug_id": "e3759a5e",
+        "branch": "bugs-dot-jar_FLINK-3684_e3759a5e_HOTFIX",
+        "project_name": "flink-libraries/flink-cep/",
+        "source_file": "flink-libraries/flink-cep/src/main/java/org/apache/flink/cep/operator/CEPPatternOperator.java",
+        "source_directory": "src/main/java",
+        "class_directory": "target/classes",
+        "test_directory": "src/test/java",
+        "test_class_directory": "target/test-classes",
+        "java_version": 8,
+        "build_script": "build_subject",
+        "config_script": "config_subject",
+        "clean_script": "clean_subject",
+        "test_script": "test_subject",
+        "bug_type": "Test Failure",
+        "build_system": "maven",
+        "line_numbers": [],
+        "dependencies": [],
+        "passing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.flink.cep.operator.CEPOperatorTest.testCEPOperatorWatermarkForwarding",
+            "org.apache.flink.cep.operator.CEPOperatorTest.testKeyedCEPOperatorWatermarkForwarding"
+        ],
+        "test_timeout": 5,
+        "count_neg": 2,
+        "count_pos": 0,
+        "src": {
+            "root_abspath": "/experiment/bugsdotjar/flink/e3759a5e/src",
+            "entrypoint": {}
+        },
+        "output_dir_abspath": "/output",
+        "language": "java"
     }
 ]
