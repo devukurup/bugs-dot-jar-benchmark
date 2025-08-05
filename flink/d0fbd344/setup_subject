@@ -12,6 +12,19 @@ mkdir dev-patch
 BRANCH="bugs-dot-jar_FLINK-15062_d0fbd344_HOTFIX"
 SUBJECT="flink"
 
+# Download developer patch
+echo "Downloading developer patch..."
+PATCH_URL="https://raw.githubusercontent.com/carolhanna01/$SUBJECT/$BRANCH/.bugs-dot-jar/developer-patch.diff"
+wget -q --timeout=30 -O dev-patch/fix.patch "$PATCH_URL"
+
+if [ $? -eq 0 ] && [ -s dev-patch/fix.patch ]; then
+    echo "Developer patch downloaded successfully"
+else
+    echo "Warning: Failed to download developer patch from $PATCH_URL"
+    # Remove empty file if download failed
+    rm -f dev-patch/fix.patch
+fi
+
 git clone --single-branch  --branch $BRANCH https://github.com/carolhanna01/$SUBJECT src
 
 exit 0
