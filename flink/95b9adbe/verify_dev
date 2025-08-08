@@ -6,7 +6,7 @@ bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 dir_name=/experiment/$benchmark_name/$project_name/$bug_id
 
 FAILING_TEST=$1
-TIMEOUT=${2:-10}
+TIMEOUT=${2:-300}
 
 cd $dir_name/src/src
 
