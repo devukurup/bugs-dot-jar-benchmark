@@ -39855,7 +39855,7 @@
         "failing_test_identifiers": [
             "org.apache.flink.mesos.runtime.clusterframework.MesosResourceManagerTest"
         ],
-        "test_timeout": 5,
+        "test_timeout": 15,
         "count_neg": 1,
         "count_pos": 0,
         "src": {
@@ -39889,7 +39889,7 @@
         "failing_test_identifiers": [
             "org.apache.flink.runtime.jobmaster.JobMasterTest"
         ],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 1,
         "count_pos": 0,
         "src": {
@@ -39924,7 +39924,7 @@
             "org.apache.flink.streaming.runtime.tasks.OneInputStreamTaskTest",
             "org.apache.flink.streaming.runtime.tasks.TwoInputStreamTaskTest"
         ],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 2,
         "count_pos": 0,
         "src": {
@@ -39958,7 +39958,7 @@
         "failing_test_identifiers": [
             "org.apache.flink.orc.OrcColumnarRowSplitReaderTest"
         ],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 1,
         "count_pos": 0,
         "src": {
@@ -39992,7 +39992,7 @@
         "failing_test_identifiers": [
             "org.apache.flink.streaming.runtime.tasks.TwoInputStreamTaskTest"
         ],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 1,
         "count_pos": 0,
         "src": {
@@ -40026,7 +40026,7 @@
         "failing_test_identifiers": [
             "org.apache.flink.runtime.io.network.partition.consumer.UnionInputGateTest"
         ],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 1,
         "count_pos": 0,
         "src": {
@@ -40060,7 +40060,7 @@
         "failing_test_identifiers": [
             "org.apache.flink.table.data.DataStructureConvertersTest"
         ],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 1,
         "count_pos": 0,
         "src": {
@@ -40092,7 +40092,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
         "src": {
@@ -40126,7 +40126,7 @@
         "failing_test_identifiers": [
             "org.apache.flink.table.filesystem.stream.StreamingFileWriterTest"
         ],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 1,
         "count_pos": 0,
         "src": {
@@ -40158,7 +40158,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
         "src": {
@@ -40190,7 +40190,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
         "src": {
@@ -40224,7 +40224,7 @@
         "failing_test_identifiers": [
             "org.apache.flink.table.runtime.operators.rank.AppendOnlyFirstNFunctionTest"
         ],
-        "test_timeout": 5,
+        "test_timeout": 20,
         "count_neg": 1,
         "count_pos": 0,
         "src": {
@@ -40245,7 +40245,7 @@
         "class_directory": "target/classes",
         "test_directory": "src/test/java",
         "test_class_directory": "target/test-classes",
-        "java_version": 8,
+        "java_version": 20,
         "build_script": "build_subject",
         "config_script": "config_subject",
         "clean_script": "clean_subject",
