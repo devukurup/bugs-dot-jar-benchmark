@@ -39785,7 +39785,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.streaming.runtime.tasks.StreamTaskTest.testStateBackendLoading"
+            "org.apache.flink.streaming.runtime.tasks.StreamTaskTest"
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -39819,7 +39819,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.streaming.api.operators.StreamingRuntimeContextTest.testListStateReturnsEmptyListByDefault"
+            "org.apache.flink.streaming.api.operators.StreamingRuntimeContextTest"
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -39853,7 +39853,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.mesos.runtime.clusterframework.MesosResourceManagerTest.testWorkerFailed"
+            "org.apache.flink.mesos.runtime.clusterframework.MesosResourceManagerTest"
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -39887,7 +39887,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.runtime.jobmaster.JobMasterTest.testRequestPartitionState"
+            "org.apache.flink.runtime.jobmaster.JobMasterTest"
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -39921,8 +39921,8 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.streaming.runtime.tasks.OneInputStreamTaskTest.testWatermarkMetrics",
-            "org.apache.flink.streaming.runtime.tasks.TwoInputStreamTaskTest.testWatermarkMetrics"
+            "org.apache.flink.streaming.runtime.tasks.OneInputStreamTaskTest",
+            "org.apache.flink.streaming.runtime.tasks.TwoInputStreamTaskTest"
         ],
         "test_timeout": 5,
         "count_neg": 2,
@@ -39956,7 +39956,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.orc.OrcColumnarRowSplitReaderTest.testReadFileWithTypes"
+            "org.apache.flink.orc.OrcColumnarRowSplitReaderTest"
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -39990,7 +39990,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.streaming.runtime.tasks.TwoInputStreamTaskTest.testCheckpointBarrierMetrics"
+            "org.apache.flink.streaming.runtime.tasks.TwoInputStreamTaskTest"
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -40024,7 +40024,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.runtime.io.network.partition.consumer.UnionInputGateTest.testUpdateInputChannel"
+            "org.apache.flink.runtime.io.network.partition.consumer.UnionInputGateTest"
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -40058,7 +40058,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.table.data.DataStructureConvertersTest.testConversions"
+            "org.apache.flink.table.data.DataStructureConvertersTest"
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -40124,7 +40124,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.table.filesystem.stream.StreamingFileWriterTest.testFailover"
+            "org.apache.flink.table.filesystem.stream.StreamingFileWriterTest"
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -40222,7 +40222,7 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.table.runtime.operators.rank.AppendOnlyFirstNFunctionTest.testConstantRankRangeWithOffset"
+            "org.apache.flink.table.runtime.operators.rank.AppendOnlyFirstNFunctionTest"
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -40256,8 +40256,8 @@
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
-            "org.apache.flink.cep.operator.CEPOperatorTest.testCEPOperatorWatermarkForwarding",
-            "org.apache.flink.cep.operator.CEPOperatorTest.testKeyedCEPOperatorWatermarkForwarding"
+            "org.apache.flink.cep.operator.CEPOperatorTest",
+            "org.apache.flink.cep.operator.CEPOperatorTest"
         ],
         "test_timeout": 5,
         "count_neg": 2,

@@ -16,16 +16,15 @@ then
 fi
 
 SUB_PROJECT="<SUB_PROJECT>"
-MAVEN_TEST_FORMAT=$(echo $TEST_CLASS | sed 's/.*\.\([^.]*\)\.\([^.]*\)$/\1#\2/')
 
 if [[ $SUB_PROJECT != "<SUB_PROJECT>" ]]
 then
-timeout $TIMEOUT mvn surefire:test -pl $SUB_PROJECT -Dtest=$MAVEN_TEST_FORMAT \
+timeout $TIMEOUT mvn surefire:test -pl $SUB_PROJECT -Dtest=$TEST_CLASS \
   -DskipTests=false \
   -Dmaven.test.skip=false \
   -Dmaven.javadoc.skip=true > /dev/null 2>&1
 else
-  timeout $TIMEOUT mvn surefire:test -Dtest=$MAVEN_TEST_FORMAT \
+  timeout $TIMEOUT mvn surefire:test -Dtest=$TEST_CLASS \
     -DskipTests=false \
     -Dmaven.test.skip=false \
     -Dmaven.javadoc.skip=true > /dev/null 2>&1
