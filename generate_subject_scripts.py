@@ -30,6 +30,7 @@ for project in projects:
     shutil.copy2("run_test",join(project["subject"],project["bug_id"],"run_test"))
     shutil.copy2("setup_subject",join(project["subject"],project["bug_id"],"setup_subject"))
     shutil.copy2("verify_dev",join(project["subject"],project["bug_id"],"verify_dev"))
+    shutil.copy2("verify_patches",join(project["subject"],project["bug_id"],"verify_patches"))
     
     # Get Java version from metadata
     java_version = project.get('java_version', 8)  # Default to Java 8 if not specified
@@ -49,6 +50,7 @@ for project in projects:
         os.system("sed -i '0,/<SUB_PROJECT>/s/<SUB_PROJECT>/{}/' {}".format(escaped_x, join(project["subject"],project["bug_id"],"build_subject")))
         os.system("sed -i '0,/<SUB_PROJECT>/s/<SUB_PROJECT>/{}/' {}".format(escaped_x, join(project["subject"],project["bug_id"],"clean_subject")))
         os.system("sed -i '0,/<SUB_PROJECT>/s/<SUB_PROJECT>/{}/' {}".format(escaped_x, join(project["subject"],project["bug_id"],"compress_deps")))
+        os.system("sed -i '0,/<SUB_PROJECT>/s/<SUB_PROJECT>/{}/' {}".format(escaped_x, join(project["subject"],project["bug_id"],"verify_patches")))
 
     else:
         # Empty project_name means build entire project (keep <SUB_PROJECT> placeholder)
