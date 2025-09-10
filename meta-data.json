@@ -40434,5 +40434,41 @@
         },
         "output_dir_abspath": "/output",
         "language": "java"
+    },
+    {
+        "id": 1179,
+        "subject": "karaf",
+        "bug_id": "6650922f",
+        "branch": "bugs-dot-jar_KARAF-2645_6650922f_HOTFIX",
+        "project_name": "instance/core/",
+        "source_file": "instance/core/src/main/java/org/apache/karaf/instance/core/internal/InstanceServiceImpl.java",
+        "source_directory": "src/main/java",
+        "class_directory": "target/classes",
+        "test_directory": "src/test/java",
+        "test_class_directory": "target/test-classes",
+        "java_version": 8,
+        "build_script": "build_subject",
+        "config_script": "config_subject",
+        "clean_script": "clean_subject",
+        "test_script": "test_subject",
+        "bug_type": "Test Failure",
+        "build_system": "maven",
+        "line_numbers": [],
+        "dependencies": [],
+        "passing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.karaf.instance.core.internal.InstanceServiceImplTest",
+            "org.apache.karaf.instance.core.internal.InstanceServiceImplTest",
+            "org.apache.karaf.instance.core.internal.InstanceServiceImplTest"
+        ],
+        "test_timeout": 20,
+        "count_neg": 3,
+        "count_pos": 0,
+        "src": {
+            "root_abspath": "/experiment/bugsdotjar/karaf/6650922f/src",
+            "entrypoint": {}
+        },
+        "output_dir_abspath": "/output",
+        "language": "java"
     }
 ]
