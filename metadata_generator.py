@@ -99,7 +99,7 @@ for line in data:
             "dependencies": [],
             "passing_test_identifiers": [],
             "failing_test_identifiers": original_data["failing_tests"],
-            "test_timeout": 5,
+            "test_timeout": 20,
             "count_neg": len(original_data["failing_tests"]),
             "count_pos": 0,
             # Adding format_updater.py functionality directly
