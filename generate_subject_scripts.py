@@ -31,6 +31,7 @@ for project in projects:
     shutil.copy2("setup_subject",join(project["subject"],project["bug_id"],"setup_subject"))
     shutil.copy2("verify_dev",join(project["subject"],project["bug_id"],"verify_dev"))
     shutil.copy2("verify_patches",join(project["subject"],project["bug_id"],"verify_patches"))
+    shutil.copy2("repairllama_main.py",join(project["subject"],project["bug_id"],"repairllama_main.py"))
     
     # Get Java version from metadata
     java_version = project.get('java_version', 8)  # Default to Java 8 if not specified

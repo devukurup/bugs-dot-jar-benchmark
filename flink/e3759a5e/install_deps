@@ -1,7 +1,7 @@
 #!/bin/bash
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends  \
-  openjdk-20-jdk \
+  openjdk-8-jdk \
   wget \
   maven
 
