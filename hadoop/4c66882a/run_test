@@ -1,0 +1,43 @@
+#!/bin/bash
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+benchmark_name=$(echo $script_dir | rev | cut -d "/" -f 3 | rev)
+project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
+bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
+dir_name=/experiment/$benchmark_name/$project_name/$bug_id
+TEST_CLASS=$1
+TIMEOUT=${2:-300}
+EXIT_CODE=1
+cd $dir_name/src/src
+
+if [ -z "$TEST_CLASS" ];
+then
+  echo "requires a test class"
+  exit 255
+fi
+
+SUB_PROJECT="src/java/org/apache/hadoop/conf/Configuration.java"
+
+if [[ $SUB_PROJECT != "<SUB_PROJECT>" ]]
+then
+timeout $TIMEOUT mvn surefire:test -pl $SUB_PROJECT -Dtest=$TEST_CLASS \
+  -DskipTests=false \
+  -Dmaven.test.skip=false \
+  -Dmaven.javadoc.skip=true > /dev/null 2>&1
+else
+  timeout $TIMEOUT mvn surefire:test -Dtest=$TEST_CLASS \
+    -DskipTests=false \
+    -Dmaven.test.skip=false \
+    -Dmaven.javadoc.skip=true > /dev/null 2>&1
+fi
+
+EXIT_CODE=$?
+
+if [[ $EXIT_CODE -eq 0 ]]
+then
+  echo "PASS"
+else
+  echo "FAIL"
+fi;
+
+exit $EXIT_CODE
+

@@ -24,6 +24,8 @@ id = len(existing_metadata)  # Continue ID sequence
 exceptions = {
     "oak": "jackrabbit-oak",
     "jcr": "jackrabbit",
+    "yarn": "hadoop",
+    "hdfs": "hadoop",
     "math": "commons-math",
     "log4j2": "logging-log4j2",
     "mng": "maven",  # ?????
