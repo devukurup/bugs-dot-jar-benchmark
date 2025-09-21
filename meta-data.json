@@ -41373,7 +41373,7 @@
         "subject": "hadoop",
         "bug_id": "4c66882a",
         "branch": "bugs-dot-jar_HADOOP-6227_4c66882a_HOTFIX",
-        "project_name": "src/java/org/apache/hadoop/conf/Configuration.java",
+        "project_name": "",
         "source_file": "src/java/org/apache/hadoop/conf/Configuration.java",
         "source_directory": "src/main/java",
         "class_directory": "target/classes",
@@ -41617,7 +41617,7 @@
         "class_directory": "target/classes",
         "test_directory": "src/test/java",
         "test_class_directory": "target/test-classes",
-        "java_version": 8,
+        "java_version": 11,
         "build_script": "build_subject",
         "config_script": "config_subject",
         "clean_script": "clean_subject",
@@ -41630,7 +41630,7 @@
         "failing_test_identifiers": [
             "org.apache.nifi.reporting.prometheus.TestPrometheusReportingTask"
         ],
-        "test_timeout": 11,
+        "test_timeout": 20,
         "count_neg": 1,
         "count_pos": 0,
         "src": {
