@@ -1,0 +1,54 @@
+#!/bin/bash
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+benchmark_name=$(echo $script_dir | rev | cut -d "/" -f 3 | rev)
+project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
+bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
+dir_name=/experiment/$benchmark_name/$project_name/$bug_id
+
+SUB_PROJECT="flink-streaming-java"
+
+# Check if SUB_PROJECT has been replaced with an actual value
+if [ "$SUB_PROJECT" != "<SUB_PROJECT>" ] && [ -n "$SUB_PROJECT" ]; then
+    # Processing dependencies for specific sub-project module
+    TARGET_PATH=$dir_name/src/src
+    SUBMODULE_PATH=$TARGET_PATH/$SUB_PROJECT
+    DEPENDENCY_PATH=$SUBMODULE_PATH/target/dependency
+    EXTRACTED_DEPENDENCIES_PATH=$SUBMODULE_PATH/extracted_dependencies
+    
+    cd $SUBMODULE_PATH
+    mvn dependency:copy-dependencies
+    
+    rm -rf "$EXTRACTED_DEPENDENCIES_PATH" \
+      && mkdir "$EXTRACTED_DEPENDENCIES_PATH" \
+        && cd "$EXTRACTED_DEPENDENCIES_PATH" \
+    && echo "Extract all dependencies from the 'jar' files from $DEPENDENCY_PATH ..." \
+        && find "$DEPENDENCY_PATH" -type f -name "*.jar" -exec jar -xf {} \;
+
+    echo "Delete *.RSA *.DSA *.SF signature files..." \
+      && find . -type f \( -name "*.RSA" -o -name "*.DSA" -o -name "*.SF" \) -delete
+
+    echo "Merge all dependencies into a single 'jar' file..." \
+      && jar -cf "$SUBMODULE_PATH"/all-dependencies.jar . \
+        && echo "JAR File with all dependencies successfully created: $SUBMODULE_PATH/all-dependencies.jar"
+else
+    # Processing dependencies for entire project (single-module or no sub-project specified)
+    TARGET_PATH=$dir_name/src/src
+    DEPENDENCY_PATH=$TARGET_PATH/target/dependency
+    EXTRACTED_DEPENDENCIES_PATH=$TARGET_PATH/extracted_dependencies
+
+    cd $TARGET_PATH/;
+    mvn dependency:copy-dependencies
+
+    rm -rf "$EXTRACTED_DEPENDENCIES_PATH" \
+      && mkdir "$EXTRACTED_DEPENDENCIES_PATH" \
+        && cd "$EXTRACTED_DEPENDENCIES_PATH" \
+    && echo "Extract all dependencies from the 'jar' files from $DEPENDENCY_PATH ..." \
+        && find "$DEPENDENCY_PATH" -type f -name "*.jar" -exec jar -xf {} \;
+
+    echo "Delete *.RSA *.DSA *.SF signature files..." \
+      && find . -type f \( -name "*.RSA" -o -name "*.DSA" -o -name "*.SF" \) -delete
+
+    echo "Merge all dependencies into a single 'jar' file..." \
+      && jar -cf "$TARGET_PATH"/all-dependencies.jar . \
+        && echo "JAR File with all dependencies successfully created: $TARGET_PATH/all-dependencies.jar"
+fi

@@ -5,12 +5,15 @@ project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
 bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 dir_name=/experiment/$benchmark_name/$project_name/$bug_id
 
+SUB_PROJECT="flink-compiler"
 TARGET_PATH=$dir_name/src/src
-DEPENDENCY_PATH=$TARGET_PATH/dependency
-EXTRACTED_DEPENDENCIES_PATH=$TARGET_PATH/extracted_dependencies
+SUBMODULE_PATH=$TARGET_PATH/$SUB_PROJECT
+DEPENDENCY_PATH=$SUBMODULE_PATH/target/dependency
+EXTRACTED_DEPENDENCIES_PATH=$SUBMODULE_PATH/extracted_dependencies
 
 
-cd $TARGET_PATH/;
+
+cd $SUBMODULE_PATH
 mvn dependency:copy-dependencies
 
 
@@ -24,5 +27,5 @@ echo "Delete *.RSA *.DSA *.SF signature files..." \
   && find . -type f \( -name "*.RSA" -o -name "*.DSA" -o -name "*.SF" \) -delete
 
 echo "Merge all dependencies into a single 'jar' file..." \
-  && jar -cf "$TARGET_PATH"/all-dependencies.jar . \
-    && echo "JAR File with all dependencies successfully created: $TARGET_PATH/all-dependencies.jar"
+  && jar -cf "$SUBMODULE_PATH"/all-dependencies.jar . \
+    && echo "JAR File with all dependencies successfully created: $SUBMODULE_PATH/all-dependencies.jar"

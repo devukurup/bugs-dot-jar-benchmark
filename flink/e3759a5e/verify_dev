@@ -5,23 +5,57 @@ project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
 bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 dir_name=/experiment/$benchmark_name/$project_name/$bug_id
 
-exit 0
+FAILING_TEST=$1
+TIMEOUT=${2:-300}
 
-#cd $dir_name/src
-#patch -f -p 1 < $dir_name/dev-patch/fix.patch
-#bash $script_dir/build_subject  > /dev/null 2>&1
-#bash $script_dir/run_test 1  > /dev/null 2>&1
-#exit_code=$?
-#patch -R -f -p 1 < $dir_name/dev-patch/fix.patch
-#bash $script_dir/build_subject > /dev/null 2>&1
-#
-#if [[ err -eq 0 ]]
-#then
-#  echo "PASS"
-#else
-#  echo "FAIL"
-#fi;
-#
-#exit $exit_code
+cd $dir_name/src/src
 
+# Check if patch exists
+PATCH_FILE="$dir_name/src/dev-patch/fix.patch"
+if [ ! -f "$PATCH_FILE" ]; then
+    echo "No patch found at $PATCH_FILE, skipping verification"
+    exit 0
+fi
 
+echo "Verifying developer patch fixes the bug..."
+
+# Apply the patch
+patch -f -p1 < "$PATCH_FILE"
+if [ $? -ne 0 ]; then
+    echo "Failed to apply patch"
+    exit 1
+fi
+
+echo "Patch applied, rebuilding project..."
+
+# Rebuild with patch applied
+bash $script_dir/build_subject > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "Build failed after applying patch"
+    # Revert patch before exiting
+    patch -R -f -p1 < "$PATCH_FILE" > /dev/null 2>&1
+    exit 1
+fi
+
+echo "Build successful, running failing test..."
+
+# Run the failing test
+bash $script_dir/run_test $FAILING_TEST $TIMEOUT > /dev/null 2>&1
+test_result=$?
+
+if [ $test_result -eq 0 ]; then
+    echo "PASS - Developer patch fixes the failing test"
+else
+    echo "FAIL - Developer patch does not fix the failing test"
+fi
+
+echo "Reverting patch to restore buggy state..."
+
+# Revert the patch to restore original buggy state
+patch -R -f -p1 < "$PATCH_FILE" > /dev/null 2>&1
+
+# Rebuild to restore buggy version
+bash $script_dir/build_subject > /dev/null 2>&1
+
+# Return test result (0 means patch successfully fixed the test)
+exit $test_result

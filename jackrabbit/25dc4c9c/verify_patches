@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+set -u
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+benchmark_name=$(echo $script_dir | rev | cut -d "/" -f 3 | rev)
+project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
+bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
+DIR_NAME="/experiment/$benchmark_name/$project_name/$bug_id"
+SUB_PROJECT="jackrabbit-jcr-commons"
+MODULE_ROOT="$DIR_NAME/src/src/$SUB_PROJECT"   
+SRC_REL="src/main/java"                                 
+
+
+PATCH_DIR="/output/patches"
+WORKDIR="$DIR_NAME/verify_work"
+OUT_JSON="/output/verification.json"
+
+MAVEN_FLAGS="-q -Dcheckstyle.skip=true -Denforcer.skip=true -Dspotbugs.skip=true \
+-Dforbiddenapis.skip=true -Dlicense.skip=true -DskipITs -Dcobertura.skip=true \
+-Djacoco.skip=true -Drat.skip=true -Drat.ignoreErrors=true -Dgpg.skip=true \
+-Dmaven.javadoc.skip=true -Dskip.npm=true -Dskip.gulp=true -Dskip.bower=true \
+-Dbaseline.skip=true"
+
+mkdir -p /output
+
+echo -n '{"results":[' > "$OUT_JSON"
+first=1
+
+add_result () {
+  local patch="$1" applied="$2" compiled="$3" plausible="$4" reason="$5"
+  if [ $first -eq 0 ]; then echo -n ',' >> "$OUT_JSON"; fi
+  first=0
+  printf '{"patch":"%s","applied":%s,"compiled":%s,"plausible":%s,"reason":"%s"}' \
+    "$patch" "$applied" "$compiled" "$plausible" "$reason" >> "$OUT_JSON"
+}
+
+# no patches? write empty and exit
+shopt -s nullglob
+patches=("$PATCH_DIR"/*.patch)
+if [ ${#patches[@]} -eq 0 ]; then
+  echo -n '],"meta":{"note":"no_patches"}}' >> "$OUT_JSON"
+  echo "[verify_patches] no patches found in $PATCH_DIR"
+  exit 0
+fi
+
+for p in "${patches[@]}"; do
+  name="$(basename "$p")"
+  echo "[verify_patches] processing $name"
+
+  # empty file?
+  if [ ! -s "$p" ]; then
+    add_result "$name" false false false "empty_patch"
+    continue
+  fi
+
+  # fresh copy of module
+  rm -rf "$WORKDIR"
+  cp -a "$MODULE_ROOT" "$WORKDIR" || { add_result "$name" false false false "copy_failed"; continue; }
+  apply_dir="$WORKDIR/$SRC_REL"
+  mkdir -p "$apply_dir"
+
+  # try dry-run with -p0, then -p1
+  if bash -lc "cd \"$apply_dir\" && patch --dry-run -p0 < \"$p\" >/dev/null 2>&1"; then
+      strip="-p0"
+  elif bash -lc "cd \"$apply_dir\" && patch --dry-run -p1 < \"$p\" >/dev/null 2>&1"; then
+      strip="-p1"
+  else
+      add_result "$name" false false false "apply_dry_run_failed"
+      continue
+  fi
+
+  # real apply
+  if ! bash -lc "cd \"$apply_dir\" && patch $strip < \"$p\" >/dev/null 2>&1"; then
+      add_result "$name" false false false "apply_failed"
+      continue
+  fi
+
+  # compile (no tests)
+  if ! bash -lc "cd \"$WORKDIR\" && mvn $MAVEN_FLAGS -DskipTests -DfailIfNoTests=false test-compile >/dev/null 2>&1"; then
+      add_result "$name" true false false "compile_failed"
+      continue
+  fi
+
+  # run tests → plausible if exit code 0
+  if bash -lc "cd \"$WORKDIR\" && mvn $MAVEN_FLAGS -DskipTests=false -DfailIfNoTests=false test >/dev/null 2>&1"; then
+      add_result "$name" true true true "tests_passed"
+  else
+      add_result "$name" true true false "tests_failed"
+  fi
+done
+
+echo -n '],"meta":{}}' >> "$OUT_JSON"
+echo "[verify_patches] wrote $OUT_JSON"
