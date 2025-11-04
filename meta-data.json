@@ -42041,7 +42041,7 @@
     {
         "id": 1224,
         "subject": "ambari",
-        "bug_id": "ambari",
+        "bug_id": "bff239c0",
         "branch": "bugs-dot-jar_AMBARI-16129_bff239c0_HOTFIX",
         "project_name": "ambari-server/",
         "source_file": "ambari-server/src/main/java/org/apache/ambari/server/controller/logging/LoggingRequestHelper.java",
