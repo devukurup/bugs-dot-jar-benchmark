@@ -42865,7 +42865,10 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.ambari.server.serveraction.upgrades.UpgradeActionTest",
+            "org.apache.ambari.server.controller.AmbariManagementControllerImplTest"
+        ],
         "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
@@ -42897,7 +42900,9 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.ambari.server.security.authorization.AmbariAuthorizationFilterTest"
+        ],
         "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
@@ -42929,7 +42934,9 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.ambari.server.controller.internal.AbstractControllerResourceProviderTest"
+        ],
         "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
@@ -43127,7 +43134,9 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.ambari.server.serveraction.upgrades.UpgradeActionTest"
+        ],
         "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
@@ -43159,7 +43168,9 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.ambari.server.actionmanager.TestActionDBAccessorImpl"
+        ],
         "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
@@ -43296,7 +43307,9 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.ambari.server.agent.TestHeartbeatHandler"
+        ],
         "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
@@ -43424,7 +43437,10 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.ambari.server.controller.AmbariManagementControllerTest",
+            "org.apache.ambari.server.api.services.AmbariMetaInfoTest"
+        ],
         "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
@@ -43456,7 +43472,9 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.ambari.server.checks.ServicesMaintenanceModeCheckTest"
+        ],
         "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,
@@ -43488,7 +43506,9 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
+        "failing_test_identifiers": [
+            "org.apache.ambari.server.controller.AmbariManagementControllerTest"
+        ],
         "test_timeout": 20,
         "count_neg": 0,
         "count_pos": 0,

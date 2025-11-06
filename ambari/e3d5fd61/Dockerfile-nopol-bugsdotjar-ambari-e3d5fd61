@@ -1,7 +1,0 @@
-FROM rshariffdeen/nopol
-ADD . /setup/bugsdotjar/ambari/e3d5fd61/
-COPY --from=bugsdotjar-ambari-e3d5fd61  /experiment /experiment
-COPY --from=bugsdotjar-ambari-e3d5fd61  /logs /logs
-COPY --from=bugsdotjar-ambari-e3d5fd61  /root/ /root/
-RUN  bash /setup/bugsdotjar/ambari/e3d5fd61/install_deps 
-ENTRYPOINT ["/bin/sh"]
