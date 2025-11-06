@@ -9,7 +9,7 @@ mkdir -p $dir_name
 cd $dir_name
 mkdir dev-patch
 
-BRANCH="bugs-dot-jar_AMBARI-12338_4b97eb77_HOTFIX
+BRANCH="bugs-dot-jar_AMBARI-12338_4b97eb77_HOTFIX"
 SUBJECT="ambari"
 
 # Download developer patch
