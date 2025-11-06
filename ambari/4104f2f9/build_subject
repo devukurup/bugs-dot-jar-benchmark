@@ -1,4 +1,17 @@
 #!/bin/bash
+# ✅ Java 8
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export PATH="$JAVA_HOME/bin:$PATH"
+
+# ✅ Maven 3.6.3
+export MAVEN_HOME=/opt/apache-maven-3.6.3
+export PATH="$MAVEN_HOME/bin:$PATH"
+
+# ✅ Python 2.7
+export PYTHON_HOME=/usr/bin/python2.7
+export PATH="$(dirname $PYTHON_HOME):$PATH"
+alias python="$PYTHON_HOME"
+
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 benchmark_name=$(echo $script_dir | rev | cut -d "/" -f 3 | rev)
 project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
@@ -27,6 +40,8 @@ if [ "$SUB_PROJECT" != "<SUB_PROJECT>" ] && [ -n "$SUB_PROJECT" ]; then
       -Dskip.gulp=true \
       -Dskip.bower=true \
       -Dbaseline.skip=true \
+      -Dskip.ui=true \
+      -Dskip.choco=true \
       -Dmaven.javadoc.skip=true
 else
     # Building entire project (single-module or no sub-project specified)
