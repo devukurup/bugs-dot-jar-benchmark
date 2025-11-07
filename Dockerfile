@@ -30,6 +30,11 @@ RUN \
 # Java version
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
+# Install protoc 2.5.0- needed for hadoop bugs
+RUN curl -fsSL -o /usr/local/bin/protoc \
+    https://repo1.maven.org/maven2/com/google/protobuf/protoc/2.5.0/protoc-2.5.0-linux-x86_64.exe \
+ && chmod +x /usr/local/bin/protoc
+
 # Timezone
 ENV TZ=America/Los_Angeles
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
