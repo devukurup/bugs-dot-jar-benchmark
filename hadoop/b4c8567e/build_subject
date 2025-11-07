@@ -6,7 +6,7 @@ bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 dir_name=/experiment/$benchmark_name/$project_name/$bug_id
 cd $dir_name/src/src
 
-SUB_PROJECT="hadoop-hdfs-project/hadoop-hdfs"
+# SUB_PROJECT="hadoop-hdfs-project/hadoop-hdfs"
 
 # Check if SUB_PROJECT has been replaced with an actual value
 if [ "$SUB_PROJECT" != "<SUB_PROJECT>" ] && [ -n "$SUB_PROJECT" ]; then

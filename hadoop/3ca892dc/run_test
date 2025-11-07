@@ -19,7 +19,8 @@ SUB_PROJECT="hadoop-common-project/hadoop-common"
 
 if [[ $SUB_PROJECT != "<SUB_PROJECT>" ]]
 then
-timeout $TIMEOUT mvn surefire:test -pl $SUB_PROJECT -Dtest=$TEST_CLASS \
+cd $SUB_PROJECT
+mvn test\
   -DskipTests=false \
   -Dmaven.test.skip=false \
   -Dmaven.javadoc.skip=true > /dev/null 2>&1
