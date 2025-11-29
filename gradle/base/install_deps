@@ -1,0 +1,16 @@
+#!/bin/bash
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    openjdk-<JAVA_VERSION>-jdk \
+    wget
+
+# Extract Java version from package name
+JAVA_VER="<JAVA_VERSION>"
+
+# Update Java alternatives to use the installed version
+if [ -n "$JAVA_VER" ] && [ "$JAVA_VER" != "8" ]; then
+    update-alternatives --set java /usr/lib/jvm/java-${JAVA_VER}-openjdk-amd64/bin/java 2>/dev/null || true
+    update-alternatives --set javac /usr/lib/jvm/java-${JAVA_VER}-openjdk-amd64/bin/javac 2>/dev/null || true
+    export JAVA_HOME=/usr/lib/jvm/java-${JAVA_VER}-openjdk-amd64
+    echo "export JAVA_HOME=/usr/lib/jvm/java-${JAVA_VER}-openjdk-amd64" >> /etc/environment
+fi

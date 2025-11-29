@@ -1,0 +1,39 @@
+#!/bin/bash
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+benchmark_name=$(echo $script_dir | rev | cut -d "/" -f 3 | rev)
+project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
+bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
+dir_name=/experiment/$benchmark_name/$project_name/$bug_id
+cd $dir_name/src/src
+
+SUB_PROJECT="clients"
+
+# Source environment variables (for JAVA_HOME set by install_deps)
+[ -f /etc/environment ] && source /etc/environment
+
+# Ensure JAVA_HOME is set
+if [ -z "$JAVA_HOME" ]; then
+    for java_dir in /usr/lib/jvm/java-*-openjdk-amd64; do
+        if [ -d "$java_dir" ]; then
+            export JAVA_HOME="$java_dir"
+        fi
+    done
+fi
+
+# Find Gradle wrapper or use system Gradle
+GRADLE_CMD=""
+if [ -f "./gradlew" ]; then
+    GRADLE_CMD="./gradlew"
+elif [ -f "gradlew" ]; then
+    GRADLE_CMD="gradlew"
+else
+    GRADLE_CMD="gradle"
+fi
+
+# Build without running tests
+if [ "$SUB_PROJECT" != "<SUB_PROJECT>" ] && [ -n "$SUB_PROJECT" ]; then
+    GRADLE_PROJECT=$(echo "$SUB_PROJECT" | sed 's:/$::' | sed 's:/:\::g')
+    $GRADLE_CMD :${GRADLE_PROJECT}:assemble --no-daemon --console=plain -x test
+else
+    $GRADLE_CMD assemble --no-daemon --console=plain -x test
+fi

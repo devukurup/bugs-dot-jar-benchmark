@@ -5,11 +5,9 @@ benchmark_name=$(echo $script_dir | rev | cut -d "/" -f 3 | rev)
 project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
 bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 DIR_NAME="/experiment/$benchmark_name/$project_name/$bug_id"
-SUB_PROJECT="solr/core"
+SUB_PROJECT="<SUB_PROJECT>"
 MODULE_ROOT="$DIR_NAME/src/src/$SUB_PROJECT"
 SRC_REL="src/main/java"
-
-BUILD_SYSTEM="gradle"
 
 PATCH_DIR="/output/patches"
 WORKDIR="$DIR_NAME/verify_work"
@@ -18,8 +16,8 @@ OUT_JSON="/output/verification.json"
 # Source environment variables (for JAVA_HOME set by install_deps)
 [ -f /etc/environment ] && source /etc/environment
 
-# For Gradle builds, ensure JAVA_HOME is set
-if [ "$BUILD_SYSTEM" = "gradle" ] && [ -z "${JAVA_HOME:-}" ]; then
+# Ensure JAVA_HOME is set
+if [ -z "${JAVA_HOME:-}" ]; then
     for java_dir in /usr/lib/jvm/java-*-openjdk-amd64; do
         if [ -d "$java_dir" ]; then
             export JAVA_HOME="$java_dir"
@@ -81,51 +79,36 @@ for p in "${patches[@]}"; do
       continue
   fi
 
-  if [ "$BUILD_SYSTEM" = "gradle" ]; then
-      # Gradle build and test
-      PROJECT_ROOT="$DIR_NAME/src/src"
-      GRADLE_CMD=""
-      if [ -f "$PROJECT_ROOT/gradlew" ]; then
-          GRADLE_CMD="$PROJECT_ROOT/gradlew"
-      else
-          GRADLE_CMD="gradle"
-      fi
-
-      # Convert sub-project path to Gradle format
-      GRADLE_PROJECT=$(echo "$SUB_PROJECT" | sed 's:/$::' | sed 's:/:\::g')
-
-      # compile (no tests)
-      if ! bash -lc "cd \"$PROJECT_ROOT\" && $GRADLE_CMD :${GRADLE_PROJECT}:compileJava :${GRADLE_PROJECT}:compileTestJava --no-daemon --console=plain >/dev/null 2>&1"; then
-          add_result "$name" true false false "compile_failed"
-          continue
-      fi
-
-      # run tests → plausible if exit code 0
-      if bash -lc "cd \"$PROJECT_ROOT\" && $GRADLE_CMD :${GRADLE_PROJECT}:test --no-daemon --console=plain >/dev/null 2>&1"; then
-          add_result "$name" true true true "tests_passed"
-      else
-          add_result "$name" true true false "tests_failed"
-      fi
+  # Gradle build and test
+  PROJECT_ROOT="$DIR_NAME/src/src"
+  GRADLE_CMD=""
+  if [ -f "$PROJECT_ROOT/gradlew" ]; then
+      GRADLE_CMD="$PROJECT_ROOT/gradlew"
   else
-      # Maven build and test
-      MAVEN_FLAGS="-q -Dcheckstyle.skip=true -Denforcer.skip=true -Dspotbugs.skip=true \
-      -Dforbiddenapis.skip=true -Dlicense.skip=true -DskipITs -Dcobertura.skip=true \
-      -Djacoco.skip=true -Drat.skip=true -Drat.ignoreErrors=true -Dgpg.skip=true \
-      -Dmaven.javadoc.skip=true -Dskip.npm=true -Dskip.gulp=true -Dskip.bower=true \
-      -Dbaseline.skip=true"
+      GRADLE_CMD="gradle"
+  fi
 
-      # compile (no tests)
-      if ! bash -lc "cd \"$WORKDIR\" && mvn $MAVEN_FLAGS -DskipTests -DfailIfNoTests=false test-compile >/dev/null 2>&1"; then
-          add_result "$name" true false false "compile_failed"
-          continue
-      fi
+  # Convert sub-project path to Gradle format
+  if [ "$SUB_PROJECT" != "<SUB_PROJECT>" ] && [ -n "$SUB_PROJECT" ]; then
+      GRADLE_PROJECT=$(echo "$SUB_PROJECT" | sed 's:/$::' | sed 's:/:\::g')
+      COMPILE_TARGET=":${GRADLE_PROJECT}:compileJava :${GRADLE_PROJECT}:compileTestJava"
+      TEST_TARGET=":${GRADLE_PROJECT}:test"
+  else
+      COMPILE_TARGET="compileJava compileTestJava"
+      TEST_TARGET="test"
+  fi
 
-      # run tests → plausible if exit code 0
-      if bash -lc "cd \"$WORKDIR\" && mvn $MAVEN_FLAGS -DskipTests=false -DfailIfNoTests=false test >/dev/null 2>&1"; then
-          add_result "$name" true true true "tests_passed"
-      else
-          add_result "$name" true true false "tests_failed"
-      fi
+  # compile (no tests)
+  if ! bash -lc "cd \"$PROJECT_ROOT\" && $GRADLE_CMD $COMPILE_TARGET --no-daemon --console=plain >/dev/null 2>&1"; then
+      add_result "$name" true false false "compile_failed"
+      continue
+  fi
+
+  # run tests → plausible if exit code 0
+  if bash -lc "cd \"$PROJECT_ROOT\" && $GRADLE_CMD $TEST_TARGET --no-daemon --console=plain >/dev/null 2>&1"; then
+      add_result "$name" true true true "tests_passed"
+  else
+      add_result "$name" true true false "tests_failed"
   fi
 done
 
