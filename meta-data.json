@@ -39781,11 +39781,33 @@
         "test_script": "test_subject",
         "bug_type": "Test Failure",
         "build_system": "maven",
-        "line_numbers": [],
+        "line_numbers": [
+            752,
+            753,
+            754,
+            755,
+            756,
+            757
+        ],
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
             "org.apache.flink.streaming.runtime.tasks.StreamTaskTest"
+        ],
+        "localization": [
+            {
+                "source_file": "flink-streaming-java/src/main/java/org/apache/flink/streaming/runtime/tasks/StreamTask.java",
+                "score": 1.0,
+                "function": "org.apache.flink.streaming.runtime.tasks.StreamTask#createStateBackend()",
+                "line_numbers": [
+                    752,
+                    753,
+                    754,
+                    755,
+                    756,
+                    757
+                ]
+            }
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -39815,11 +39837,25 @@
         "test_script": "test_subject",
         "bug_type": "Test Failure",
         "build_system": "maven",
-        "line_numbers": [],
+        "line_numbers": [
+            144,
+            145
+        ],
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
             "org.apache.flink.streaming.api.operators.StreamingRuntimeContextTest"
+        ],
+        "localization": [
+            {
+                "source_file": "flink-streaming-java/src/main/java/org/apache/flink/streaming/api/operators/StreamingRuntimeContext.java",
+                "score": 1.0,
+                "function": "org.apache.flink.streaming.api.operators.StreamingRuntimeContext#getListState()",
+                "line_numbers": [
+                    144,
+                    145
+                ]
+            }
         ],
         "test_timeout": 5,
         "count_neg": 1,
@@ -40589,7 +40625,11 @@
         "test_script": "test_subject",
         "bug_type": "Test Failure",
         "build_system": "maven",
-        "line_numbers": [],
+        "line_numbers": [
+            227,
+            228,
+            229
+        ],
         "dependencies": [],
         "passing_test_identifiers": [],
         "failing_test_identifiers": [
@@ -40604,7 +40644,19 @@
             "entrypoint": {}
         },
         "output_dir_abspath": "/output",
-        "language": "java"
+        "language": "java",
+        "localization": [
+            {
+                "source_file": "jackrabbit-core/src/main/java/org/apache/jackrabbit/core/state/NameSet.java",
+                "score": 1.0,
+                "function": "org.apache.jackrabbit.core.state.NameSet",
+                "line_numbers": [
+                    227,
+                    228,
+                    229
+                ]
+            }
+        ]
     },
     {
         "id": 1184,
