@@ -42209,9 +42209,11 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
-        "test_timeout": 20,
-        "count_neg": 0,
+        "failing_test_identifiers": [
+            "org.apache.lucene.search.uhighlight.TestUnifiedHighlighterMTQ"
+        ],
+        "test_timeout": 120,
+        "count_neg": 1,
         "count_pos": 0,
         "src": {
             "root_abspath": "/experiment/bugsdotjar/solr/0baf2fa3/src",
@@ -42275,9 +42277,11 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
-        "test_timeout": 20,
-        "count_neg": 0,
+        "failing_test_identifiers": [
+            "org.apache.lucene.queries.function.TestValueSources"
+        ],
+        "test_timeout": 120,
+        "count_neg": 1,
         "count_pos": 0,
         "src": {
             "root_abspath": "/experiment/bugsdotjar/solr/3a63c58d/src",

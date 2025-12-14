@@ -1,0 +1,24 @@
+#!/bin/bash
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+benchmark_name=$(echo $script_dir | rev | cut -d "/" -f 3 | rev)
+project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
+bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
+dir_name=/experiment/$benchmark_name/$project_name/$bug_id
+cd $dir_name/src/src
+
+SUB_PROJECT="lucene/queries"
+
+[ -f /etc/environment ] && source /etc/environment
+
+if [ -z "$JAVA_HOME" ]; then
+    for java_dir in /usr/lib/jvm/java-*-openjdk-amd64; do
+        if [ -d "$java_dir" ]; then
+            export JAVA_HOME="$java_dir"
+        fi
+    done
+fi
+
+if [ "$SUB_PROJECT" != "<SUB_PROJECT>" ] && [ -n "$SUB_PROJECT" ]; then
+    cd "$SUB_PROJECT"
+fi
+ant compile
