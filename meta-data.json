@@ -42311,9 +42311,12 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
-        "test_timeout": 20,
-        "count_neg": 0,
+        "failing_test_identifiers": [
+            "org.apache.lucene.analysis.ngram.NGramTokenizerTest",
+            "org.apache.lucene.analysis.ngram.EdgeNGramTokenFilterTest"
+        ],
+        "test_timeout": 120,
+        "count_neg": 2,
         "count_pos": 0,
         "src": {
             "root_abspath": "/experiment/bugsdotjar/solr/561fddd8/src",
