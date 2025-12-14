@@ -1,10 +1,7 @@
 import os
 from os.path import join
-from pprint import pprint
 import shutil
-import urllib.request
 import json
-from pprint import pprint
 
 
 metadata = open("meta-data.json","r")
@@ -13,31 +10,48 @@ projects = json.load(metadata)
 
 metadata.close()
 
+# Get the directory where this script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 for project in projects:
-    
+
     # Skip if branch doesn't contain "hotfix"
     if 'hotfix' not in project['branch'].lower():
         continue
-    
+
     os.makedirs(project["subject"],exist_ok=True)
     os.makedirs(join(project["subject"],project["bug_id"]),exist_ok=True)
 
-    shutil.copy2("build_subject",join(project["subject"],project["bug_id"],"build_subject"))
-    shutil.copy2("clean_subject",join(project["subject"],project["bug_id"],"clean_subject"))
-    shutil.copy2("compress_deps",join(project["subject"],project["bug_id"],"compress_deps"))
-    shutil.copy2("config_subject",join(project["subject"],project["bug_id"],"config_subject"))
-    shutil.copy2("install_deps",join(project["subject"],project["bug_id"],"install_deps"))
-    shutil.copy2("run_test",join(project["subject"],project["bug_id"],"run_test"))
-    shutil.copy2("setup_subject",join(project["subject"],project["bug_id"],"setup_subject"))
-    shutil.copy2("verify_dev",join(project["subject"],project["bug_id"],"verify_dev"))
-    shutil.copy2("verify_patches",join(project["subject"],project["bug_id"],"verify_patches"))
-    shutil.copy2("repairllama_main.py",join(project["subject"],project["bug_id"],"repairllama_main.py"))
+    # Determine template directory based on build system
+    build_system = project.get('build_system', 'maven')
+    if build_system == 'gradle':
+        template_dir = join(script_dir, "gradle", "base")
+    elif build_system == 'ant':
+        template_dir = join(script_dir, "ant", "base")
+    else:
+        # Default to Maven (root directory templates)
+        template_dir = script_dir
+
+    shutil.copy2(join(template_dir, "build_subject"),join(project["subject"],project["bug_id"],"build_subject"))
+    shutil.copy2(join(template_dir, "clean_subject"),join(project["subject"],project["bug_id"],"clean_subject"))
+    shutil.copy2(join(template_dir, "compress_deps"),join(project["subject"],project["bug_id"],"compress_deps"))
+    shutil.copy2(join(template_dir, "config_subject"),join(project["subject"],project["bug_id"],"config_subject"))
+    shutil.copy2(join(template_dir, "install_deps"),join(project["subject"],project["bug_id"],"install_deps"))
+    shutil.copy2(join(template_dir, "run_test"),join(project["subject"],project["bug_id"],"run_test"))
+    shutil.copy2(join(template_dir, "setup_subject"),join(project["subject"],project["bug_id"],"setup_subject"))
+    shutil.copy2(join(template_dir, "verify_dev"),join(project["subject"],project["bug_id"],"verify_dev"))
+    shutil.copy2(join(template_dir, "verify_patches"),join(project["subject"],project["bug_id"],"verify_patches"))
+    # repairllama_main.py is always from root directory (not build-system specific)
+    shutil.copy2(join(script_dir, "repairllama_main.py"),join(project["subject"],project["bug_id"],"repairllama_main.py"))
     
     # Get Java version from metadata
     java_version = project.get('java_version', 8)  # Default to Java 8 if not specified
-    
+
     # Update install_deps with correct Java version
+    # For Maven templates: replace openjdk-8-jdk pattern
+    # For Gradle/Ant templates: replace <JAVA_VERSION> placeholder
     os.system("sed -i 's/openjdk-[0-9]*-jdk/openjdk-{}-jdk/' {}".format(java_version, join(project["subject"],project["bug_id"],"install_deps")))
+    os.system("sed -i 's/<JAVA_VERSION>/{}/' {}".format(java_version, join(project["subject"],project["bug_id"],"install_deps")))
     
     x = project["project_name"].rstrip('/')  # Remove trailing slash safely
     os.system("sed -i 's/<BRANCH>/{}/' {}".format(project['branch'],join(project["subject"],project["bug_id"],"setup_subject")))
