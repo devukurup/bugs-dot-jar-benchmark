@@ -42346,9 +42346,13 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
-        "test_timeout": 20,
-        "count_neg": 0,
+        "failing_test_identifiers": [
+            "org.apache.lucene.search.TestSloppyPhraseQuery",
+            "org.apache.lucene.search.TestPhraseQuery",
+            "org.apache.lucene.search.TestSimpleSearchEquivalence"
+        ],
+        "test_timeout": 120,
+        "count_neg": 3,
         "count_pos": 0,
         "src": {
             "root_abspath": "/experiment/bugsdotjar/solr/6d68694c/src",
