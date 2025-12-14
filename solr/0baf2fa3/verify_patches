@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+set -u
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+benchmark_name=$(echo $script_dir | rev | cut -d "/" -f 3 | rev)
+project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
+bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
+DIR_NAME="/experiment/$benchmark_name/$project_name/$bug_id"
+SUB_PROJECT="lucene/highlighter"
+MODULE_ROOT="$DIR_NAME/src/src/$SUB_PROJECT"
+SRC_REL="src/java"
+
+PATCH_DIR="/output/patches"
+WORKDIR="$DIR_NAME/verify_work"
+OUT_JSON="/output/verification.json"
+
+[ -f /etc/environment ] && source /etc/environment
+
+if [ -z "${JAVA_HOME:-}" ]; then
+    for java_dir in /usr/lib/jvm/java-*-openjdk-amd64; do
+        if [ -d "$java_dir" ]; then
+            export JAVA_HOME="$java_dir"
+        fi
+    done
+fi
+
+mkdir -p /output
+
+echo -n '{"results":[' > "$OUT_JSON"
+first=1
+
+add_result () {
+  local patch="$1" applied="$2" compiled="$3" plausible="$4" reason="$5"
+  if [ $first -eq 0 ]; then echo -n ',' >> "$OUT_JSON"; fi
+  first=0
+  printf '{"patch":"%s","applied":%s,"compiled":%s,"plausible":%s,"reason":"%s"}' \
+    "$patch" "$applied" "$compiled" "$plausible" "$reason" >> "$OUT_JSON"
+}
+
+shopt -s nullglob
+patches=("$PATCH_DIR"/*.patch)
+if [ ${#patches[@]} -eq 0 ]; then
+  echo -n '],"meta":{"note":"no_patches"}}' >> "$OUT_JSON"
+  echo "[verify_patches] no patches found in $PATCH_DIR"
+  exit 0
+fi
+
+for p in "${patches[@]}"; do
+  name="$(basename "$p")"
+  echo "[verify_patches] processing $name"
+
+  if [ ! -s "$p" ]; then
+    add_result "$name" false false false "empty_patch"
+    continue
+  fi
+
+  rm -rf "$WORKDIR"
+  cp -a "$MODULE_ROOT" "$WORKDIR" || { add_result "$name" false false false "copy_failed"; continue; }
+  apply_dir="$WORKDIR/$SRC_REL"
+  mkdir -p "$apply_dir"
+
+  if bash -lc "cd \"$apply_dir\" && patch --dry-run -p0 < \"$p\" >/dev/null 2>&1"; then
+      strip="-p0"
+  elif bash -lc "cd \"$apply_dir\" && patch --dry-run -p1 < \"$p\" >/dev/null 2>&1"; then
+      strip="-p1"
+  else
+      add_result "$name" false false false "apply_dry_run_failed"
+      continue
+  fi
+
+  if ! bash -lc "cd \"$apply_dir\" && patch $strip < \"$p\" >/dev/null 2>&1"; then
+      add_result "$name" false false false "apply_failed"
+      continue
+  fi
+
+  PROJECT_ROOT="$DIR_NAME/src/src"
+
+  if [ "$SUB_PROJECT" != "<SUB_PROJECT>" ] && [ -n "$SUB_PROJECT" ]; then
+      BUILD_DIR="$PROJECT_ROOT/$SUB_PROJECT"
+  else
+      BUILD_DIR="$PROJECT_ROOT"
+  fi
+
+  if ! bash -lc "cd \"$BUILD_DIR\" && ant compile >/dev/null 2>&1"; then
+      add_result "$name" true false false "compile_failed"
+      continue
+  fi
+
+  if bash -lc "cd \"$BUILD_DIR\" && ant test >/dev/null 2>&1"; then
+      add_result "$name" true true true "tests_passed"
+  else
+      add_result "$name" true true false "tests_failed"
+  fi
+done
+
+echo -n '],"meta":{}}' >> "$OUT_JSON"
+echo "[verify_patches] wrote $OUT_JSON"
