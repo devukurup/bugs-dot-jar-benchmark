@@ -3,4 +3,11 @@ apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     openjdk-<JAVA_VERSION>-jdk \
     ant \
+    ant-optional \
+    ivy \
     wget
+
+mkdir -p /root/.ant/lib
+if [ -f /usr/share/java/ivy.jar ]; then
+    cp /usr/share/java/ivy.jar /root/.ant/lib/
+fi

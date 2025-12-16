@@ -74,7 +74,7 @@ for p in "${patches[@]}"; do
 
   PROJECT_ROOT="$DIR_NAME/src/src"
 
-  if [ -n "$SUB_PROJECT" ]; then
+  if [ "$SUB_PROJECT" != "<SUB_PROJECT>" ] && [ -n "$SUB_PROJECT" ]; then
       BUILD_DIR="$PROJECT_ROOT/$SUB_PROJECT"
   else
       BUILD_DIR="$PROJECT_ROOT"

@@ -5,5 +5,6 @@ project_name=$(echo $script_dir | rev | cut -d "/" -f 2 | rev)
 bug_id=$(echo $script_dir | rev | cut -d "/" -f 1 | rev)
 dir_name=/experiment/$benchmark_name/$project_name/$bug_id
 
+# Dependency compression not implemented for Ant projects
 echo "Dependency compression not implemented for Ant - skipping"
 exit 0
