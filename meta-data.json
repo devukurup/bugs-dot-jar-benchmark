@@ -42482,9 +42482,12 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
-        "test_timeout": 20,
-        "count_neg": 0,
+        "failing_test_identifiers": [
+            "org.apache.lucene.search.similarities.TestSimilarity2",
+            "org.apache.lucene.search.similarities.TestSimilarityBase"
+        ],
+        "test_timeout": 120,
+        "count_neg": 2,
         "count_pos": 0,
         "src": {
             "root_abspath": "/experiment/bugsdotjar/solr/a027a355/src",
