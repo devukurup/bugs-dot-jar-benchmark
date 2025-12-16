@@ -42382,9 +42382,11 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
-        "test_timeout": 20,
-        "count_neg": 0,
+        "failing_test_identifiers": [
+            "org.apache.lucene.analysis.hunspell.TestDoubleEscape"
+        ],
+        "test_timeout": 120,
+        "count_neg": 1,
         "count_pos": 0,
         "src": {
             "root_abspath": "/experiment/bugsdotjar/solr/79351129/src",
@@ -42414,9 +42416,11 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
-        "test_timeout": 20,
-        "count_neg": 0,
+        "failing_test_identifiers": [
+            "org.apache.lucene.search.TestBooleanMinShouldMatch"
+        ],
+        "test_timeout": 120,
+        "count_neg": 1,
         "count_pos": 0,
         "src": {
             "root_abspath": "/experiment/bugsdotjar/solr/93ebd8d5/src",
