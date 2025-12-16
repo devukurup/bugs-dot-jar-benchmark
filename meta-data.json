@@ -42517,9 +42517,11 @@
         "line_numbers": [],
         "dependencies": [],
         "passing_test_identifiers": [],
-        "failing_test_identifiers": [],
-        "test_timeout": 20,
-        "count_neg": 0,
+        "failing_test_identifiers": [
+            "org.apache.lucene.index.TestFilterCodecReader"
+        ],
+        "test_timeout": 120,
+        "count_neg": 1,
         "count_pos": 0,
         "src": {
             "root_abspath": "/experiment/bugsdotjar/solr/b2b597b0/src",
